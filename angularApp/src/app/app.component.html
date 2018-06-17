@@ -1,0 +1,76 @@
+<!-- INDEX OF TASKS -->
+<div class="main_div">
+  <h1>Restful Tasks API</h1>
+  <button (click)="show()">
+    <span *ngIf="!showTasks">Show Tasks</span>
+    <span *ngIf="showTasks">Hide Tasks</span>
+  </button>
+  <div *ngIf="showTasks">
+    <ol *ngIf="tasks.length; else noTasks">
+      <li *ngFor="let task of tasks">{{task.title}}<span *ngIf="task.description"> -- {{task.description}}</span> -- <span *ngIf="!task.completed">in</span>complete
+        <div class="modify">
+          <button (click)="delete(task._id)">Delete</button>
+        </div>
+      </li>
+    </ol>
+    <ng-template #noTasks>
+      <ul>
+        <li>No tasks.</li>
+      </ul>
+    </ng-template>
+  </div>
+</div>
+
+<!--SHOW / EDIT TASK-->
+<div class="main_div">
+  <h1>Display Task</h1>
+  <label>Enter Task Number: <input id="search_index" type="text"></label>
+  <button (click)="findTask()">Search</button>
+  <ul *ngIf="searched">
+    <li *ngIf="searchedTask; else error">
+      {{searchedTask.title}}
+      <span *ngIf="searchedTask.description"> -- {{searchedTask.description}}</span> -- <span *ngIf="!searchedTask.completed">in</span>complete
+      <div class="modify">
+          <button (click)="delete(searchedTask._id)">Delete</button>
+      </div>
+    </li>
+    <div *ngIf="searchedTask">
+      <h1>Edit Task</h1>  
+      <form (submit)="edit()">
+        <div>
+            <label>Title: 
+              <div><input type="text" [(ngModel)]="searchedTask.title" id="form_title" name="searchedTask.title"></div></label>
+        </div>
+        <div>
+            <label>Description: 
+              <div><input type="text" [(ngModel)]="searchedTask.description" id="form_description" name="searchedTask.description"></div></label>
+        </div>
+        <div>
+            <label>Complete: <input type="checkbox" [(ngModel)]="searchedTask.completed" id="form_completed" name="searchedTask.completed"></label>
+            <button>Save</button>
+        </div>
+      </form>
+    </div>
+    <ng-template #error><li>Task doesn't exist.</li></ng-template>
+  </ul>
+</div>
+
+<!--CREATE NEW TASK-->
+<div class="main_div">
+  <h1>Add Task</h1>
+  <form (submit)="submit()">
+    <!-- <p>{{ newTask | json }}</p> -->
+    <div>
+        <label>Title: 
+          <div><input type="text" [(ngModel)]="newTask.title" id="form_title" name="newTask.title"></div></label>
+    </div>
+    <div>
+        <label>Description: 
+          <div><input type="text" [(ngModel)]="newTask.description" id="form_description" name="newTask.description"></div></label>
+    </div>
+    <div>
+        <label>Complete: <input type="checkbox" [(ngModel)]="newTask.completed" id="form_completed" name="newTask.completed"></label>
+        <button>Save</button>
+    </div>
+  </form>
+</div>
